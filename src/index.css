@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+@layer theme {
+  :root {
+    --font-sans: 'Open Sans', 'Roboto', ui-sans-serif, system-ui, sans-serif;
+    --font-roboto: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+    --font-roboto-flex: 'Roboto Flex', 'Roboto', ui-sans-serif, system-ui, sans-serif;
+  }
+}
