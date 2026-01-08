@@ -4,7 +4,9 @@ import ReactSelect, { type InputActionMeta, type SelectInstance } from 'react-se
 import { twMerge } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
+import type { SelectSearchOption } from '../../types/select';
 import { Badge } from '../Badge';
+import { ErrorMessage, Label } from '../Form';
 
 const icon = tv({
   base: 'pointer-events-none absolute top-1/2 right-3 z-50 size-6 -translate-y-1/2',
@@ -19,18 +21,13 @@ const icon = tv({
   },
 });
 
-export type SelectSearchOptions = {
-  label: string;
-  value: string;
-  code?: string;
-  [key: string]: unknown;
-};
+export type { SelectSearchOption } from '../../types/select';
 
 type BaseSelectSearchProps = {
   name?: string;
   label?: string;
   placeholder?: string;
-  options: SelectSearchOptions[];
+  options: SelectSearchOption[];
   inputValue?: string;
   error?: string;
   containerClassName?: string;
@@ -38,7 +35,7 @@ type BaseSelectSearchProps = {
   isLoading?: boolean;
   allowTypedValue?: boolean;
   isRemoteSearch?: boolean;
-  formatOptionLabel?: (option: SelectSearchOptions) => React.ReactNode;
+  formatOptionLabel?: (option: SelectSearchOption) => React.ReactNode;
   onSearch?: (value: string, meta: InputActionMeta) => void;
   onMenuOpen?: () => void;
   onClear?: () => void;
@@ -64,7 +61,7 @@ const Icon = ({ hasError }: { hasError?: boolean }) => {
   return <Component className={icon({ hasError })} />;
 };
 
-export const SelectSearch = forwardRef<SelectInstance<SelectSearchOptions>, SelectSearchProps>(
+export const SelectSearch = forwardRef<SelectInstance<SelectSearchOption>, SelectSearchProps>(
   (
     {
       label,
@@ -127,11 +124,7 @@ export const SelectSearch = forwardRef<SelectInstance<SelectSearchOptions>, Sele
 
     return (
       <div className={twMerge('flex w-full flex-col gap-2', containerClassName)}>
-        {!!label && (
-          <label htmlFor={name} className="text-sm font-medium text-gray-900">
-            {label}
-          </label>
-        )}
+        {label && <Label htmlFor={name}>{label}</Label>}
 
         <div className="relative z-40">
           <ReactSelect
@@ -146,13 +139,13 @@ export const SelectSearch = forwardRef<SelectInstance<SelectSearchOptions>, Sele
             onChange={(option) => {
               if (isMulti && option && !Array.isArray(option)) {
                 const currentValues = Array.isArray(value) ? value : [];
-                const newValue = (option as SelectSearchOptions).value;
+                const newValue = (option as SelectSearchOption).value;
                 if (!currentValues.includes(newValue)) {
                   (onValueChange as (value: string[]) => void)([...currentValues, newValue]);
                 }
                 setInternalInputValue('');
               } else if (option && !Array.isArray(option)) {
-                (onValueChange as (value: string) => void)((option as SelectSearchOptions).value);
+                (onValueChange as (value: string) => void)((option as SelectSearchOption).value);
               } else if (!option) {
                 if (isMulti) {
                   (onValueChange as (value: string[]) => void)([]);
@@ -302,9 +295,7 @@ export const SelectSearch = forwardRef<SelectInstance<SelectSearchOptions>, Sele
           </div>
         )}
 
-        {hasError && (
-          <span className="text-destructive-700 mt-0.5 text-sm font-normal">{error}</span>
-        )}
+        <ErrorMessage error={error} className="mt-0.5" />
       </div>
     );
   }

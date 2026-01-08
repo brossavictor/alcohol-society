@@ -4,6 +4,9 @@ import React from 'react';
 import { twJoin } from 'tailwind-merge';
 import { tv } from 'tailwind-variants';
 
+import type { SelectOption } from '../../types/select';
+import { ErrorMessage, Label } from '../Form';
+
 const select = tv({
   slots: {
     trigger:
@@ -38,14 +41,11 @@ const select = tv({
   },
 });
 
-export type SelectOptions = {
-  label: string;
-  value: string;
-};
+export type { SelectOption } from '../../types/select';
 
 type SelectBaseProps = ReactSelect.SelectProps & {
   label?: string;
-  options: SelectOptions[];
+  options: SelectOption[];
   placeholder?: string;
   error?: string;
   iconLeft?: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -76,9 +76,9 @@ export const Select = ({
   return (
     <div className={twJoin('flex flex-col', className)}>
       {label && (
-        <label htmlFor={name} className="mb-2 text-sm font-medium text-gray-900">
+        <Label htmlFor={name} className="mb-2">
           {label}
-        </label>
+        </Label>
       )}
 
       <ReactSelect.Root
@@ -139,7 +139,7 @@ export const Select = ({
         </ReactSelect.Portal>
       </ReactSelect.Root>
 
-      {!!error && <span className="text-destructive-700 mt-2 text-sm font-normal">{error}</span>}
+      <ErrorMessage error={error} className="mt-2" />
     </div>
   );
 };

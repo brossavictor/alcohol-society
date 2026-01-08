@@ -5,6 +5,10 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/16/solid';
 
+import { products } from 'src/constants';
+
+import { MenuList } from '../MenuList';
+import { NavigationItem } from '../NavigationItem';
 import { SelectSearch } from '../SelectSearch';
 
 export const Header = () => {
@@ -27,28 +31,17 @@ export const Header = () => {
           />
         </div>
         <div className="flex w-1/3 flex-row justify-end gap-3">
-          <div className="flex flex-row gap-1">
-            <BuildingStorefrontIcon className="size-6" />
-            <p>Stores</p>
-          </div>
-          <div className="flex flex-row">
-            <UserCircleIcon className="mr-1 size-6" />
-            <p>My account</p>
-            <ChevronDownIcon className="size-6" />
-          </div>
+          <NavigationItem icon={<BuildingStorefrontIcon className="size-6" />} text="Stores" />
+          <NavigationItem
+            icon={<UserCircleIcon className="mr-1 size-6" />}
+            text="My account"
+            rightIcon={<ChevronDownIcon className="size-6" />}
+          />
         </div>
       </div>
       <div className="mx-8 flex flex-row gap-2">
-        <ul>
-          <li>
-            <a href=""></a>Featured
-          </li>
-        </ul>
-        <ul>
-          <li>
-            <a href="">Products</a>
-          </li>
-        </ul>
+        <MenuList options={products}>Featured</MenuList>
+        <MenuList options={products}>Products</MenuList>
       </div>
     </header>
   );
